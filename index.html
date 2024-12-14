@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Get My Location</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    #coords {
+      font-size: 1.2em;
+      color: #333;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Get Your Current Location</h1>
+<p>Click the button below to allow location access. Once granted, your current coordinates will appear. Copy these coordinates and return to the form to paste them.</p>
+
+<button onclick="getLocation()">Show My Coordinates</button>
+
+<div id="coords"></div>
+
+<script>
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+      document.getElementById('coords').textContent = 'Geolocation is not supported by this browser.';
+    }
+  }
+  
+  function showPosition(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    document.getElementById('coords').textContent = `Latitude: ${lat}, Longitude: ${lng}`;
+  }
+  
+  function showError(error) {
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        document.getElementById('coords').textContent = "User denied the request for Geolocation."
+        break;
+      case error.POSITION_UNAVAILABLE:
+        document.getElementById('coords').textContent = "Location information is unavailable."
+        break;
+      case error.TIMEOUT:
+        document.getElementById('coords').textContent = "The request to get user location timed out."
+        break;
+      case error.UNKNOWN_ERROR:
+        document.getElementById('coords').textContent = "An unknown error occurred."
+        break;
+    }
+  }
+</script>
+
+</body>
+</html>
